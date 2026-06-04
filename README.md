@@ -32,19 +32,34 @@ cp pet/spritesheet.webp ~/.codex/pets/march-7th-tongue/spritesheet.webp
 
 ## 让 AI 自动添加宠物
 
-如果你正在使用 Codex，可以让 AI 直接帮你安装。把这个仓库打开为当前工作目录，然后发送：
+如果你正在使用 Codex 或其他能访问网络和本地文件的 AI 助手，可以直接把 GitHub 地址发给它，让它访问仓库并安装：
 
 ```text
-请帮我安装这个 Codex 小宠物。将 pet/pet.json 和 pet/spritesheet.webp 复制到 ${CODEX_HOME:-$HOME/.codex}/pets/march-7th-tongue/，如果目录不存在就创建它。安装后请检查目标目录里两个文件都存在。
+请访问这个 GitHub 仓库并帮我安装 Codex 小宠物：
+https://github.com/Miaonster/march-7th-codex-pet
+
+请下载或克隆仓库，将仓库里的 pet/pet.json 和 pet/spritesheet.webp 复制到 ${CODEX_HOME:-$HOME/.codex}/pets/march-7th-tongue/。如果目录不存在就创建它。安装后请检查目标目录里两个文件都存在，并告诉我安装路径。
 ```
 
 AI 应执行的动作等价于：
 
 ```bash
+tmp_dir="$(mktemp -d)"
+git clone https://github.com/Miaonster/march-7th-codex-pet "$tmp_dir/march-7th-codex-pet"
+
 mkdir -p "${CODEX_HOME:-$HOME/.codex}/pets/march-7th-tongue"
-cp pet/pet.json "${CODEX_HOME:-$HOME/.codex}/pets/march-7th-tongue/pet.json"
-cp pet/spritesheet.webp "${CODEX_HOME:-$HOME/.codex}/pets/march-7th-tongue/spritesheet.webp"
+cp "$tmp_dir/march-7th-codex-pet/pet/pet.json" "${CODEX_HOME:-$HOME/.codex}/pets/march-7th-tongue/pet.json"
+cp "$tmp_dir/march-7th-codex-pet/pet/spritesheet.webp" "${CODEX_HOME:-$HOME/.codex}/pets/march-7th-tongue/spritesheet.webp"
+
 ls -la "${CODEX_HOME:-$HOME/.codex}/pets/march-7th-tongue"
+```
+
+如果 AI 所在环境不能使用 `git`，也可以直接下载原始文件：
+
+```bash
+mkdir -p "${CODEX_HOME:-$HOME/.codex}/pets/march-7th-tongue"
+curl -L "https://raw.githubusercontent.com/Miaonster/march-7th-codex-pet/main/pet/pet.json" -o "${CODEX_HOME:-$HOME/.codex}/pets/march-7th-tongue/pet.json"
+curl -L "https://raw.githubusercontent.com/Miaonster/march-7th-codex-pet/main/pet/spritesheet.webp" -o "${CODEX_HOME:-$HOME/.codex}/pets/march-7th-tongue/spritesheet.webp"
 ```
 
 安装完成后，重启 Codex 或重新加载宠物列表。
