@@ -30,6 +30,25 @@ cp pet/spritesheet.webp ~/.codex/pets/march-7th-tongue/spritesheet.webp
 
 安装后重启 Codex 或重新加载宠物列表。
 
+## 让 AI 自动添加宠物
+
+如果你正在使用 Codex，可以让 AI 直接帮你安装。把这个仓库打开为当前工作目录，然后发送：
+
+```text
+请帮我安装这个 Codex 小宠物。将 pet/pet.json 和 pet/spritesheet.webp 复制到 ${CODEX_HOME:-$HOME/.codex}/pets/march-7th-tongue/，如果目录不存在就创建它。安装后请检查目标目录里两个文件都存在。
+```
+
+AI 应执行的动作等价于：
+
+```bash
+mkdir -p "${CODEX_HOME:-$HOME/.codex}/pets/march-7th-tongue"
+cp pet/pet.json "${CODEX_HOME:-$HOME/.codex}/pets/march-7th-tongue/pet.json"
+cp pet/spritesheet.webp "${CODEX_HOME:-$HOME/.codex}/pets/march-7th-tongue/spritesheet.webp"
+ls -la "${CODEX_HOME:-$HOME/.codex}/pets/march-7th-tongue"
+```
+
+安装完成后，重启 Codex 或重新加载宠物列表。
+
 ## 文件
 
 - `pet/pet.json`: Codex 宠物清单。
